@@ -1,0 +1,11 @@
+const router=require('express').Router();
+const {requireAuth}=require('../middlewares/auth');
+const controller=require('../controllers/profile-controller');
+const wrap=require('../middlewares/async-handler');
+const multer=require('multer');
+const avatarUpload=multer({storage:multer.memoryStorage(),limits:{fileSize:5*1024*1024},fileFilter:(req,file,cb)=>cb(null,['image/jpeg','image/png','image/webp'].includes(file.mimetype))});
+router.use(requireAuth);
+router.get('/',wrap(controller.read));
+router.patch('/',wrap(controller.update));
+router.post('/avatar',avatarUpload.single('avatar'),wrap(controller.uploadAvatar));
+module.exports=router;

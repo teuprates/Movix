@@ -1,8 +1,12 @@
 const router = require('express').Router();
 const controller = require('../controllers/auth-controller');
-router.post('/register', controller.register);
-router.post('/login', controller.login);
-router.post('/logout', controller.logout);
-router.post('/recover', controller.recover);
-router.get('/session', controller.session);
+const wrap = require('../middlewares/async-handler');
+const { requireAuth } = require('../middlewares/auth');
+router.post('/register', wrap(controller.register));
+router.post('/login', wrap(controller.login));
+router.post('/logout', wrap(controller.logout));
+router.post('/recover', wrap(controller.recover));
+router.post('/recovery-session', wrap(controller.recoverySession));
+router.get('/session', (req,res,next)=>req.cookies?.movix_session?requireAuth(req,res,next):wrap(controller.session)(req,res,next));
+router.put('/password', requireAuth, wrap(controller.changePassword));
 module.exports = router;

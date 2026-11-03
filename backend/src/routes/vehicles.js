@@ -1,0 +1,1 @@
+const router=require('express').Router();const {requireAuth}=require('../middlewares/auth');const wrap=require('../middlewares/async-handler');const {vehicles}=require('../controllers/resource-controller');router.get('/',requireAuth,wrap(vehicles));module.exports=router;

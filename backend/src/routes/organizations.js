@@ -1,0 +1,1 @@
+const router=require('express').Router();const {requireAuth}=require('../middlewares/auth');const wrap=require('../middlewares/async-handler');const {organizations}=require('../controllers/resource-controller');router.get('/me',requireAuth,wrap(organizations));module.exports=router;
